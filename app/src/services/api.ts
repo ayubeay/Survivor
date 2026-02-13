@@ -26,6 +26,7 @@ import {
 import { MonitorAgent, ContractStore } from "../agents/monitor-agent";
 import { ResolutionAgent } from "../agents/resolution-agent";
 import { DisputeStore } from "../agents/escalation-agent";
+import { authMiddleware, createAdminRouter, incrementContractCount } from "./auth";
 
 // ============================================================
 // In-memory store (v0.1 — replace with Postgres/SQLite later)
@@ -84,6 +85,8 @@ export const disputeStore: DisputeStore = {
 export function createApp(monitor: MonitorAgent): express.Application {
   const app = express();
   app.use(express.json());
+  app.use(authMiddleware);
+  app.use("/admin", createAdminRouter());
 
   const resolutionAgent = new ResolutionAgent();
 
@@ -116,6 +119,8 @@ export function createApp(monitor: MonitorAgent): express.Application {
 
     contracts.set(id, contract);
     events.set(id, []);
+    const apiKeyRecord = (req as any).apiKey;
+    if (apiKeyRecord) incrementContractCount(apiKeyRecord.key);
 
     console.log(`[API] Created contract ${id}: ${payer} → ${payee}, ${amount} ${mint}`);
     res.status(201).json(contract);
