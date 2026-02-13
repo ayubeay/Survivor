@@ -96,7 +96,7 @@ function checkRateLimit(key: string, tier: ApiTier): boolean {
 
 export function authMiddleware(req: Request, res: Response, next: NextFunction): void {
   if (req.path === "/health") { next(); return; }
-  if (req.path.startsWith("/admin/")) { next(); return; }
+  if (req.path.startsWith("/admin/")) { const adminKey = req.headers["x-admin-key"] as string; if (adminKey !== process.env.SURVIVOR_ADMIN_KEY) { res.status(401).json({ error: "Invalid admin key" }); return; } next(); return; }
 
   const apiKey = req.headers["x-api-key"] as string;
   if (!apiKey) {

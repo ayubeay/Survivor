@@ -138,8 +138,8 @@ async function main() {
   console.log("╚════════════════════════════════════════════╝");
   const client = createSolanaClient();
   const payer = loadPayer();
-  const keyRes = await fetch(API + "/admin/keys", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ owner: "pilot-test", tier: "enterprise" }) });
-  const keyData = await keyRes.json();
+  const keyRes = await fetch(API + "/admin/keys", { method: "POST", headers: { "Content-Type": "application/json", "x-admin-key": process.env.SURVIVOR_ADMIN_KEY || "dev" }, body: JSON.stringify({ owner: "pilot-test", tier: "pilot" }) });
+  const keyData: any = await keyRes.json();
   API_KEY = keyData.key;
   console.log("[AUTH] Test key: " + API_KEY);
   console.log("Payer:", payer.publicKey.toBase58());
