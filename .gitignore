@@ -1,0 +1,19 @@
+# Vendored Rust deps (reproducible via cargo vendor)
+vendor-deps/
+vendor/
+
+# Build artifacts
+target/
+node_modules/
+dist/
+
+# Environment
+.env
+*.log
+
+# Solana keypairs (NEVER commit)
+payer.json
+*.json.bak
+
+# OS
+.DS_Store
