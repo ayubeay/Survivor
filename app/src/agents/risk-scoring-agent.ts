@@ -2,6 +2,7 @@ import {
   WorkContract,
   SurvivorEvent,
   EventType,
+  ContractStatus,
   RiskAssessment,
   RiskFactor,
 } from "../types";
@@ -34,6 +35,26 @@ export class RiskScoringAgent {
   assess(contract: WorkContract, events: SurvivorEvent[], now: number): RiskAssessment {
     const factors: RiskFactor[] = [];
     let score = 0;
+
+    // Guard: Freeze score once disputed/paused/resolved
+    const hasDispute = events.some(e => e.type === EventType.DisputeOpened);
+    if (hasDispute || contract.status === ContractStatus.Paused || contract.status === ContractStatus.Resolved) {
+      return {
+        workContractId: contract.id,
+        previousScore: contract.riskScore,
+        newScore: contract.riskScore,
+        factors: [{
+          name: "score_frozen",
+          weight: 0,
+          triggered: true,
+          description: hasDispute
+            ? "Score frozen: dispute in progress"
+            : `Score frozen: contract ${contract.status}`,
+        }],
+        shouldEscalate: false,
+        timestamp: now,
+      };
+    }
 
     // Factor 1: Deadline missed (time-based)
     const deadlinePassed = now > contract.deadlineTs;
