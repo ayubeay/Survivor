@@ -1,0 +1,994 @@
+{
+  "address": "Ca4DHFBvQ8PJurgZH5H5K7XaV4KiYYRcg4ZNDWcLLzNm",
+  "metadata": {
+    "name": "survivor",
+    "version": "0.1.0",
+    "spec": "0.1.0",
+    "description": "Survivor - Autonomous risk, compliance, and payment resolution"
+  },
+  "instructions": [
+    {
+      "name": "challenge",
+      "docs": [
+        "Either party can challenge a proposed resolution within the 48h window.",
+        "This escalates to human review."
+      ],
+      "discriminator": [
+        16,
+        107,
+        14,
+        39,
+        244,
+        150,
+        81,
+        187
+      ],
+      "accounts": [
+        {
+          "name": "challenger",
+          "signer": true
+        },
+        {
+          "name": "work_contract",
+          "writable": true
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "create_work_contract",
+      "docs": [
+        "Creates a new WorkContract between payer and payee.",
+        "No funds move yet — this just establishes the agreement."
+      ],
+      "discriminator": [
+        149,
+        150,
+        9,
+        163,
+        16,
+        189,
+        168,
+        108
+      ],
+      "accounts": [
+        {
+          "name": "payer",
+          "writable": true,
+          "signer": true
+        },
+        {
+          "name": "payee"
+        },
+        {
+          "name": "survivor_authority"
+        },
+        {
+          "name": "mint"
+        },
+        {
+          "name": "work_contract",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  119,
+                  111,
+                  114,
+                  107,
+                  95,
+                  99,
+                  111,
+                  110,
+                  116,
+                  114,
+                  97,
+                  99,
+                  116
+                ]
+              },
+              {
+                "kind": "arg",
+                "path": "contract_id"
+              }
+            ]
+          }
+        },
+        {
+          "name": "vault",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  118,
+                  97,
+                  117,
+                  108,
+                  116
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "work_contract"
+              }
+            ]
+          }
+        },
+        {
+          "name": "vault_authority",
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  118,
+                  97,
+                  117,
+                  108,
+                  116,
+                  95,
+                  97,
+                  117,
+                  116,
+                  104,
+                  111,
+                  114,
+                  105,
+                  116,
+                  121
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "work_contract"
+              }
+            ]
+          }
+        },
+        {
+          "name": "system_program",
+          "address": "11111111111111111111111111111111"
+        },
+        {
+          "name": "token_program",
+          "address": "TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA"
+        },
+        {
+          "name": "rent",
+          "address": "SysvarRent111111111111111111111111111111111"
+        }
+      ],
+      "args": [
+        {
+          "name": "amount",
+          "type": "u64"
+        },
+        {
+          "name": "deadline_ts",
+          "type": "i64"
+        },
+        {
+          "name": "grace_period_seconds",
+          "type": "i64"
+        },
+        {
+          "name": "contract_id",
+          "type": "string"
+        }
+      ]
+    },
+    {
+      "name": "execute_resolution",
+      "docs": [
+        "Execute a resolution after the challenge window has passed (unchallenged),",
+        "OR after human review for escalated disputes.",
+        "Moves actual funds."
+      ],
+      "discriminator": [
+        1,
+        21,
+        239,
+        205,
+        18,
+        197,
+        46,
+        72
+      ],
+      "accounts": [
+        {
+          "name": "survivor_authority",
+          "signer": true
+        },
+        {
+          "name": "work_contract",
+          "writable": true
+        },
+        {
+          "name": "vault",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  118,
+                  97,
+                  117,
+                  108,
+                  116
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "work_contract"
+              }
+            ]
+          }
+        },
+        {
+          "name": "vault_authority",
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  118,
+                  97,
+                  117,
+                  108,
+                  116,
+                  95,
+                  97,
+                  117,
+                  116,
+                  104,
+                  111,
+                  114,
+                  105,
+                  116,
+                  121
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "work_contract"
+              }
+            ]
+          }
+        },
+        {
+          "name": "payer_token_account",
+          "writable": true
+        },
+        {
+          "name": "payee_token_account",
+          "writable": true
+        },
+        {
+          "name": "token_program",
+          "address": "TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA"
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "fund_work_contract",
+      "docs": [
+        "Payer locks USDC into the contract vault."
+      ],
+      "discriminator": [
+        179,
+        99,
+        255,
+        192,
+        213,
+        240,
+        223,
+        209
+      ],
+      "accounts": [
+        {
+          "name": "payer",
+          "writable": true,
+          "signer": true
+        },
+        {
+          "name": "work_contract",
+          "writable": true
+        },
+        {
+          "name": "payer_token_account",
+          "writable": true
+        },
+        {
+          "name": "vault",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  118,
+                  97,
+                  117,
+                  108,
+                  116
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "work_contract"
+              }
+            ]
+          }
+        },
+        {
+          "name": "token_program",
+          "address": "TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA"
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "pause",
+      "docs": [
+        "Survivor authority pauses the contract during a dispute.",
+        "Prevents any resolution until dispute is handled."
+      ],
+      "discriminator": [
+        211,
+        22,
+        221,
+        251,
+        74,
+        121,
+        193,
+        47
+      ],
+      "accounts": [
+        {
+          "name": "survivor_authority",
+          "signer": true
+        },
+        {
+          "name": "work_contract",
+          "writable": true
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "reclaim_after_timeout",
+      "docs": [
+        "Dead man's switch: payer reclaims funds if deadline + grace period has passed",
+        "and no resolution was executed."
+      ],
+      "discriminator": [
+        130,
+        40,
+        121,
+        16,
+        195,
+        139,
+        92,
+        86
+      ],
+      "accounts": [
+        {
+          "name": "payer",
+          "signer": true
+        },
+        {
+          "name": "work_contract",
+          "writable": true
+        },
+        {
+          "name": "vault",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  118,
+                  97,
+                  117,
+                  108,
+                  116
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "work_contract"
+              }
+            ]
+          }
+        },
+        {
+          "name": "vault_authority",
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  118,
+                  97,
+                  117,
+                  108,
+                  116,
+                  95,
+                  97,
+                  117,
+                  116,
+                  104,
+                  111,
+                  114,
+                  105,
+                  116,
+                  121
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "work_contract"
+              }
+            ]
+          }
+        },
+        {
+          "name": "payer_token_account",
+          "writable": true
+        },
+        {
+          "name": "token_program",
+          "address": "TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA"
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "resolve",
+      "docs": [
+        "Survivor authority proposes a resolution.",
+        "Starts a 48-hour challenge window before funds move."
+      ],
+      "discriminator": [
+        246,
+        150,
+        236,
+        206,
+        108,
+        63,
+        58,
+        10
+      ],
+      "accounts": [
+        {
+          "name": "survivor_authority",
+          "signer": true
+        },
+        {
+          "name": "work_contract",
+          "writable": true
+        }
+      ],
+      "args": [
+        {
+          "name": "outcome",
+          "type": {
+            "defined": {
+              "name": "ResolutionOutcome"
+            }
+          }
+        },
+        {
+          "name": "split_bps_payee",
+          "type": "u16"
+        }
+      ]
+    }
+  ],
+  "accounts": [
+    {
+      "name": "WorkContract",
+      "discriminator": [
+        186,
+        41,
+        137,
+        190,
+        226,
+        122,
+        219,
+        90
+      ]
+    }
+  ],
+  "events": [
+    {
+      "name": "ContractCreated",
+      "discriminator": [
+        80,
+        69,
+        164,
+        109,
+        77,
+        15,
+        47,
+        164
+      ]
+    },
+    {
+      "name": "ContractFunded",
+      "discriminator": [
+        86,
+        198,
+        62,
+        111,
+        156,
+        46,
+        142,
+        238
+      ]
+    },
+    {
+      "name": "ContractPaused",
+      "discriminator": [
+        101,
+        135,
+        79,
+        82,
+        111,
+        71,
+        59,
+        58
+      ]
+    },
+    {
+      "name": "ContractReclaimed",
+      "discriminator": [
+        195,
+        104,
+        76,
+        232,
+        66,
+        140,
+        15,
+        182
+      ]
+    },
+    {
+      "name": "ContractResolved",
+      "discriminator": [
+        247,
+        52,
+        97,
+        232,
+        144,
+        144,
+        192,
+        224
+      ]
+    },
+    {
+      "name": "ResolutionChallenged",
+      "discriminator": [
+        134,
+        252,
+        105,
+        19,
+        175,
+        223,
+        45,
+        16
+      ]
+    },
+    {
+      "name": "ResolutionProposed",
+      "discriminator": [
+        209,
+        21,
+        193,
+        193,
+        218,
+        234,
+        131,
+        108
+      ]
+    }
+  ],
+  "errors": [
+    {
+      "code": 6000,
+      "name": "InvalidAmount",
+      "msg": "Invalid amount"
+    },
+    {
+      "code": 6001,
+      "name": "DeadlineInPast",
+      "msg": "Deadline must be in the future"
+    },
+    {
+      "code": 6002,
+      "name": "GracePeriodTooShort",
+      "msg": "Grace period must be at least 72 hours"
+    },
+    {
+      "code": 6003,
+      "name": "ContractIdTooLong",
+      "msg": "Contract ID too long (max 32 chars)"
+    },
+    {
+      "code": 6004,
+      "name": "InvalidStatus",
+      "msg": "Invalid contract status for this operation"
+    },
+    {
+      "code": 6005,
+      "name": "Unauthorized",
+      "msg": "Unauthorized"
+    },
+    {
+      "code": 6006,
+      "name": "InvalidSplitBps",
+      "msg": "Split basis points must be <= 10000"
+    },
+    {
+      "code": 6007,
+      "name": "ChallengeWindowOpen",
+      "msg": "Challenge window still open"
+    },
+    {
+      "code": 6008,
+      "name": "ChallengeWindowClosed",
+      "msg": "Challenge window has closed"
+    },
+    {
+      "code": 6009,
+      "name": "NoResolutionSet",
+      "msg": "No resolution has been set"
+    },
+    {
+      "code": 6010,
+      "name": "TooEarlyToReclaim",
+      "msg": "Too early to reclaim — deadline + grace period not reached"
+    },
+    {
+      "code": 6011,
+      "name": "AlreadyResolved",
+      "msg": "Contract already resolved"
+    },
+    {
+      "code": 6012,
+      "name": "NotFunded",
+      "msg": "Contract not funded"
+    },
+    {
+      "code": 6013,
+      "name": "Overflow",
+      "msg": "Arithmetic overflow"
+    }
+  ],
+  "types": [
+    {
+      "name": "ContractCreated",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "work_contract",
+            "type": "pubkey"
+          },
+          {
+            "name": "payer",
+            "type": "pubkey"
+          },
+          {
+            "name": "payee",
+            "type": "pubkey"
+          },
+          {
+            "name": "amount",
+            "type": "u64"
+          },
+          {
+            "name": "deadline_ts",
+            "type": "i64"
+          },
+          {
+            "name": "contract_id",
+            "type": "string"
+          }
+        ]
+      }
+    },
+    {
+      "name": "ContractFunded",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "work_contract",
+            "type": "pubkey"
+          },
+          {
+            "name": "amount",
+            "type": "u64"
+          },
+          {
+            "name": "timestamp",
+            "type": "i64"
+          }
+        ]
+      }
+    },
+    {
+      "name": "ContractPaused",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "work_contract",
+            "type": "pubkey"
+          },
+          {
+            "name": "timestamp",
+            "type": "i64"
+          }
+        ]
+      }
+    },
+    {
+      "name": "ContractReclaimed",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "work_contract",
+            "type": "pubkey"
+          },
+          {
+            "name": "payer",
+            "type": "pubkey"
+          },
+          {
+            "name": "amount",
+            "type": "u64"
+          },
+          {
+            "name": "timestamp",
+            "type": "i64"
+          }
+        ]
+      }
+    },
+    {
+      "name": "ContractResolved",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "work_contract",
+            "type": "pubkey"
+          },
+          {
+            "name": "resolution",
+            "type": {
+              "defined": {
+                "name": "Resolution"
+              }
+            }
+          },
+          {
+            "name": "timestamp",
+            "type": "i64"
+          }
+        ]
+      }
+    },
+    {
+      "name": "ContractStatus",
+      "type": {
+        "kind": "enum",
+        "variants": [
+          {
+            "name": "Created"
+          },
+          {
+            "name": "Funded"
+          },
+          {
+            "name": "Paused"
+          },
+          {
+            "name": "PendingResolution"
+          },
+          {
+            "name": "Escalated"
+          },
+          {
+            "name": "Resolved"
+          }
+        ]
+      }
+    },
+    {
+      "name": "Resolution",
+      "type": {
+        "kind": "enum",
+        "variants": [
+          {
+            "name": "None"
+          },
+          {
+            "name": "Release"
+          },
+          {
+            "name": "Refund"
+          },
+          {
+            "name": "Split",
+            "fields": [
+              {
+                "name": "bps_payee",
+                "type": "u16"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "name": "ResolutionChallenged",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "work_contract",
+            "type": "pubkey"
+          },
+          {
+            "name": "challenger",
+            "type": "pubkey"
+          },
+          {
+            "name": "timestamp",
+            "type": "i64"
+          }
+        ]
+      }
+    },
+    {
+      "name": "ResolutionOutcome",
+      "type": {
+        "kind": "enum",
+        "variants": [
+          {
+            "name": "Release"
+          },
+          {
+            "name": "Refund"
+          },
+          {
+            "name": "Split"
+          }
+        ]
+      }
+    },
+    {
+      "name": "ResolutionProposed",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "work_contract",
+            "type": "pubkey"
+          },
+          {
+            "name": "outcome",
+            "type": {
+              "defined": {
+                "name": "ResolutionOutcome"
+              }
+            }
+          },
+          {
+            "name": "split_bps_payee",
+            "type": "u16"
+          },
+          {
+            "name": "challenge_deadline",
+            "type": "i64"
+          },
+          {
+            "name": "timestamp",
+            "type": "i64"
+          }
+        ]
+      }
+    },
+    {
+      "name": "WorkContract",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "payer",
+            "type": "pubkey"
+          },
+          {
+            "name": "payee",
+            "type": "pubkey"
+          },
+          {
+            "name": "survivor_authority",
+            "type": "pubkey"
+          },
+          {
+            "name": "mint",
+            "type": "pubkey"
+          },
+          {
+            "name": "amount",
+            "type": "u64"
+          },
+          {
+            "name": "deadline_ts",
+            "type": "i64"
+          },
+          {
+            "name": "grace_period_seconds",
+            "type": "i64"
+          },
+          {
+            "name": "status",
+            "type": {
+              "defined": {
+                "name": "ContractStatus"
+              }
+            }
+          },
+          {
+            "name": "resolution",
+            "type": {
+              "defined": {
+                "name": "Resolution"
+              }
+            }
+          },
+          {
+            "name": "contract_id",
+            "type": "string"
+          },
+          {
+            "name": "created_at",
+            "type": "i64"
+          },
+          {
+            "name": "resolved_at",
+            "type": "i64"
+          },
+          {
+            "name": "challenge_deadline",
+            "type": "i64"
+          },
+          {
+            "name": "bump",
+            "type": "u8"
+          },
+          {
+            "name": "vault_bump",
+            "type": "u8"
+          },
+          {
+            "name": "vault_authority_bump",
+            "type": "u8"
+          }
+        ]
+      }
+    }
+  ]
+}

@@ -1,0 +1,12 @@
+/Users/youngmodulus/Downloads/survivor-v01/target/sbf-solana-solana/release/deps/libsolana_curve25519-53d8e1bbcee250ca.rmeta: /Users/youngmodulus/Downloads/survivor-v01/vendor-deps/solana-curve25519/src/lib.rs /Users/youngmodulus/Downloads/survivor-v01/vendor-deps/solana-curve25519/src/curve_syscall_traits.rs /Users/youngmodulus/Downloads/survivor-v01/vendor-deps/solana-curve25519/src/edwards.rs /Users/youngmodulus/Downloads/survivor-v01/vendor-deps/solana-curve25519/src/errors.rs /Users/youngmodulus/Downloads/survivor-v01/vendor-deps/solana-curve25519/src/ristretto.rs /Users/youngmodulus/Downloads/survivor-v01/vendor-deps/solana-curve25519/src/scalar.rs
+
+/Users/youngmodulus/Downloads/survivor-v01/target/sbf-solana-solana/release/deps/libsolana_curve25519-53d8e1bbcee250ca.rlib: /Users/youngmodulus/Downloads/survivor-v01/vendor-deps/solana-curve25519/src/lib.rs /Users/youngmodulus/Downloads/survivor-v01/vendor-deps/solana-curve25519/src/curve_syscall_traits.rs /Users/youngmodulus/Downloads/survivor-v01/vendor-deps/solana-curve25519/src/edwards.rs /Users/youngmodulus/Downloads/survivor-v01/vendor-deps/solana-curve25519/src/errors.rs /Users/youngmodulus/Downloads/survivor-v01/vendor-deps/solana-curve25519/src/ristretto.rs /Users/youngmodulus/Downloads/survivor-v01/vendor-deps/solana-curve25519/src/scalar.rs
+
+/Users/youngmodulus/Downloads/survivor-v01/target/sbf-solana-solana/release/deps/solana_curve25519-53d8e1bbcee250ca.d: /Users/youngmodulus/Downloads/survivor-v01/vendor-deps/solana-curve25519/src/lib.rs /Users/youngmodulus/Downloads/survivor-v01/vendor-deps/solana-curve25519/src/curve_syscall_traits.rs /Users/youngmodulus/Downloads/survivor-v01/vendor-deps/solana-curve25519/src/edwards.rs /Users/youngmodulus/Downloads/survivor-v01/vendor-deps/solana-curve25519/src/errors.rs /Users/youngmodulus/Downloads/survivor-v01/vendor-deps/solana-curve25519/src/ristretto.rs /Users/youngmodulus/Downloads/survivor-v01/vendor-deps/solana-curve25519/src/scalar.rs
+
+/Users/youngmodulus/Downloads/survivor-v01/vendor-deps/solana-curve25519/src/lib.rs:
+/Users/youngmodulus/Downloads/survivor-v01/vendor-deps/solana-curve25519/src/curve_syscall_traits.rs:
+/Users/youngmodulus/Downloads/survivor-v01/vendor-deps/solana-curve25519/src/edwards.rs:
+/Users/youngmodulus/Downloads/survivor-v01/vendor-deps/solana-curve25519/src/errors.rs:
+/Users/youngmodulus/Downloads/survivor-v01/vendor-deps/solana-curve25519/src/ristretto.rs:
+/Users/youngmodulus/Downloads/survivor-v01/vendor-deps/solana-curve25519/src/scalar.rs:
