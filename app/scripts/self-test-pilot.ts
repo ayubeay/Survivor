@@ -6,9 +6,10 @@ import * as path from "path";
 const API = "http://localhost:3001";
 const MINT = new PublicKey("DbA1f1ptueMM1AZjrdDPnJoU9ncWCQ5gj1wY8yfqykxA");
 const results: any[] = [];
+let API_KEY = "";
 
 async function api(method: string, endpoint: string, body?: any): Promise<any> {
-  const opts: any = { method, headers: { "Content-Type": "application/json" } };
+  const opts: any = { method, headers: { "Content-Type": "application/json", "x-api-key": API_KEY } };
   if (body) opts.body = JSON.stringify(body);
   const res = await fetch(`${API}${endpoint}`, opts);
   return res.json();
@@ -137,6 +138,10 @@ async function main() {
   console.log("╚════════════════════════════════════════════╝");
   const client = createSolanaClient();
   const payer = loadPayer();
+  const keyRes = await fetch(API + "/admin/keys", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ owner: "pilot-test", tier: "enterprise" }) });
+  const keyData = await keyRes.json();
+  API_KEY = keyData.key;
+  console.log("[AUTH] Test key: " + API_KEY);
   console.log("Payer:", payer.publicKey.toBase58());
 
   for (const [fn, label] of [[scenarioA,"A"],[scenarioB,"B"],[scenarioC,"C"],[scenarioD,"D"],[scenarioE,"E"]] as any) {

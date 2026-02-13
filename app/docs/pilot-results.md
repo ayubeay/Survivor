@@ -1,15 +1,15 @@
 # Survivor v0.1 — Pilot Results
 
-**Date:** 2026-02-13T13:58:37.787Z
+**Date:** 2026-02-13T15:52:52.413Z
 **Program:** Ca4DHFBvQ8PJurgZH5H5K7XaV4KiYYRcg4ZNDWcLLzNm
 
 | Scenario | Result | Resolution |
 |---|---|---|
-| A: Clean Delivery | ✅ | N/A |
-| B: Missed Deadline | ✅ | escalated |
-| C: Strong Proof → Release | ✅ | release |
-| D: Weak Proof → Split | ✅ | split |
-| E: No Proof → Refund | ✅ | refund |
+| A: Clean Delivery | ❌ | N/A |
+| B: Missed Deadline | ❌ | escalated |
+| C: Strong Proof → Release | ❌ | N/A |
+| D: Weak Proof → Split | ❌ | N/A |
+| E: No Proof → Refund | ❌ | N/A |
 
 ## Details
 
@@ -17,9 +17,8 @@
 ```json
 {
   "name": "A: Clean Delivery",
-  "passed": true,
+  "passed": false,
   "resolution": "N/A",
-  "risk": 0,
   "vault": 1000000
 }
 ```
@@ -28,9 +27,8 @@
 ```json
 {
   "name": "B: Missed Deadline",
-  "passed": true,
-  "resolution": "escalated",
-  "risk": 25
+  "passed": false,
+  "resolution": "escalated"
 }
 ```
 
@@ -38,9 +36,7 @@
 ```json
 {
   "name": "C: Strong Proof → Release",
-  "passed": true,
-  "resolution": "release",
-  "confidence": 0.8999999999999999
+  "passed": false
 }
 ```
 
@@ -48,9 +44,7 @@
 ```json
 {
   "name": "D: Weak Proof → Split",
-  "passed": true,
-  "resolution": "split",
-  "splitBps": 4000
+  "passed": false
 }
 ```
 
@@ -58,8 +52,7 @@
 ```json
 {
   "name": "E: No Proof → Refund",
-  "passed": true,
-  "resolution": "refund",
+  "passed": false,
   "vault": 0,
   "onchain": "{\"resolved\":{}}"
 }
